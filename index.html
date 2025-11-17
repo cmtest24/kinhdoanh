@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bảng Tính Hoạch Định Tài Chính</title>
+    <!-- Tải Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Sử dụng font Inter cho toàn bộ trang */
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        /* Tùy chỉnh kiểu cho input number để ẩn mũi tên tăng/giảm */
+        input[type=number]::-webkit-inner-spin-button,
+        input[type=number]::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+        input[type=number] {
+            -moz-appearance: textfield;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 p-4 md:p-8">
+
+    <div class="max-w-3xl mx-auto bg-white shadow-2xl rounded-lg overflow-hidden">
+        <!-- Tiêu đề -->
+        <header class="bg-indigo-600 text-white p-6">
+            <h1 class="text-2xl md:text-3xl font-bold text-center">Bảng Tính Hoạch Định Tài Chính</h1>
+        </header>
+
+        <div class="p-6 md:p-8 grid grid-cols-1 md:grid-cols-2 gap-8">
+            
+            <!-- CỘT 1: VỐN VÀ BIẾN SỐ -->
+            <div class="space-y-6">
+                <!-- Vốn Đầu Tư -->
+                <section>
+                    <h2 class="text-xl font-semibold text-gray-800 border-b pb-2 mb-4">PHẦN 1: VỐN ĐẦU TƯ</h2>
+                    <div class="flex justify-between items-center bg-gray-50 p-4 rounded-lg">
+                        <span class="text-gray-600">Tổng Vốn Đầu Tư:</span>
+                        <span class="text-2xl font-bold text-red-600" id="tongVon">210,000,000 VNĐ</span>
+                    </div>
+                </section>
+
+                <!-- Biến Số -->
+                <section>
+                    <h2 class="text-xl font-semibold text-gray-800 border-b pb-2 mb-4">PHẦN 2: BIẾN SỐ (Nhập liệu)</h2>
+                    <div class="space-y-4">
+                        <div>
+                            <label for="nhapHang" class="block text-sm font-medium text-gray-700">Tiền nhập hàng / tháng (TB)</label>
+                            <!-- Thay đổi: type="text", inputmode="numeric" và oninput="formatCurrencyInput(event)" -->
+                            <input type="text" inputmode="numeric" id="nhapHang" value="7,500,000" class="mt-1 block w-full p-3 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500" oninput="formatCurrencyInput(event)">
+                        </div>
+                        <div>
+                            <label for="thue" class="block text-sm font-medium text-gray-700">Tỷ lệ thuế (%)</label>
+                            <input type="number" id="thue" value="10" class="mt-1 block w-full p-3 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500">
+                        </div>
+                        <div>
+                            <label for="tongNgayBan" class="block text-sm font-medium text-gray-700">Tổng số ngày bán / tháng</label>
+                            <input type="number" id="tongNgayBan" value="20" class="mt-1 block w-full p-3 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500">
+                        </div>
+                        <div>
+                            <label for="ngayCaoDiem" class="block text-sm font-medium text-gray-700">Số ngày "CAO ĐIỂM"</label>
+                            <input type="number" id="ngayCaoDiem" value="10" class="mt-1 block w-full p-3 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500">
+                        </div>
+                        <div>
+                            <label for="dtCaoDiem" class="block text-sm font-medium text-gray-700">Doanh thu TB / ngày "CAO ĐIỂM"</label>
+                            <!-- Thay đổi: type="text", inputmode="numeric" và oninput="formatCurrencyInput(event)" -->
+                            <input type="text" inputmode="numeric" id="dtCaoDiem" value="2,500,000" class="mt-1 block w-full p-3 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500" oninput="formatCurrencyInput(event)">
+                        </div>
+                        <div>
+                            <label for="dtThapDiem" class="block text-sm font-medium text-gray-700">Doanh thu TB / ngày "THẤP ĐIỂM"</label>
+                            <!-- Thay đổi: type="text", inputmode="numeric" và oninput="formatCurrencyInput(event)" -->
+                            <input type="text" inputmode="numeric" id="dtThapDiem" value="1,200,000" class="mt-1 block w-full p-3 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500" oninput="formatCurrencyInput(event)">
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+            <!-- CỘT 2: KẾT QUẢ TÍNH TOÁN -->
+            <div class="space-y-6">
+                <!-- Kết quả Kinh doanh -->
+                <section class="bg-indigo-50 p-6 rounded-lg shadow-inner">
+                    <h2 class="text-xl font-semibold text-gray-800 border-b border-indigo-200 pb-2 mb-4">PHẦN 3: KẾT QUẢ KINH DOANH</h2>
+                    <div class="space-y-4">
+                        <div class="flex justify-between items-center">
+                            <span class="text-gray-600">Số ngày "THẤP ĐIỂM":</span>
+                            <span class="text-lg font-semibold text-gray-900" id="kqNgayThapDiem">10</span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-gray-600">Tổng Doanh Thu (Tháng):</span>
+                            <span class="text-lg font-semibold text-gray-900" id="kqTongDoanhThu">37,000,000</span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-gray-600">Lợi nhuận TRƯỚC THUẾ:</span>
+                            <span class="text-lg font-semibold text-gray-900" id="kqLoiNhuanTruocThue">29,500,000</span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-gray-600">Tiền thuế phải nộp:</span>
+                            <span class="text-lg font-semibold text-red-500" id="kqThue">2,950,000</span>
+                        </div>
+                        
+                        <!-- Kết quả quan trọng -->
+                        <div class="pt-4 mt-4 border-t border-indigo-200">
+                            <div class="bg-white p-4 rounded-lg shadow">
+                                <label class="block text-sm font-medium text-gray-700 text-center">LỢI NHUẬN RÒNG (TIỀN DƯ)</label>
+                                <p class="text-3xl font-bold text-green-600 text-center mt-1" id="kqLoiNhuanRong">26,550,000 VNĐ</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Hoàn Vốn -->
+                <section class="bg-blue-50 p-6 rounded-lg shadow-inner">
+                    <h2 class="text-xl font-semibold text-gray-800 border-b border-blue-200 pb-2 mb-4">PHẦN 4: HOÀN VỐN</h2>
+                    <div class="bg-white p-4 rounded-lg shadow">
+                        <label class="block text-sm font-medium text-gray-700 text-center">SỐ THÁNG HOÀN VỐN</label>
+                        <p class="text-3xl font-bold text-blue-600 text-center mt-1" id="kqHoanVon">7.9 (tháng)</p>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Định dạng số sang tiền VNĐ
+        const formatter = new Intl.NumberFormat('vi-VN', {
+            style: 'currency',
+            currency: 'VND',
+            maximumFractionDigits: 0
+        });
+        
+        // Hàm mới: Tự động format khi nhập
+        function formatCurrencyInput(event) {
+            const input = event.target;
+            let value = input.value;
+            
+            // 1. Lấy giá trị số thô (loại bỏ mọi thứ không phải số)
+            let rawValue = value.replace(/[^0-9]/g, '');
+
+            if (rawValue) {
+                // 2. Format lại
+                let formattedValue = new Intl.NumberFormat('vi-VN').format(rawValue);
+                
+                // 3. Cập nhật giá trị vào ô input
+                input.value = formattedValue;
+            } else {
+                input.value = ''; // Cho phép xóa hết
+            }
+        }
+        
+        // Hàm mới: Lấy số thô từ ô input đã format
+        function parseFormattedValue(value) {
+            // Loại bỏ dấu phẩy (hoặc dấu chấm phân cách hàng ngàn)
+            return parseFloat(value.replace(/[^0-9]/g, '')) || 0;
+        }
+
+        // Lấy tất cả các DOM element
+        const inputs = {
+            nhapHang: document.getElementById('nhapHang'),
+            thue: document.getElementById('thue'),
+            tongNgayBan: document.getElementById('tongNgayBan'),
+            ngayCaoDiem: document.getElementById('ngayCaoDiem'),
+            dtCaoDiem: document.getElementById('dtCaoDiem'),
+            dtThapDiem: document.getElementById('dtThapDiem'),
+        };
+
+        const outputs = {
+            kqNgayThapDiem: document.getElementById('kqNgayThapDiem'),
+            kqTongDoanhThu: document.getElementById('kqTongDoanhThu'),
+            kqLoiNhuanTruocThue: document.getElementById('kqLoiNhuanTruocThue'),
+            kqThue: document.getElementById('kqThue'),
+            kqLoiNhuanRong: document.getElementById('kqLoiNhuanRong'),
+            kqHoanVon: document.getElementById('kqHoanVon'),
+        };
+
+        const tongVon = 210000000;
+
+        // Hàm tính toán chính
+        function tinhToan() {
+            // Lấy giá trị đầu vào và chuyển sang số
+            // Sửa đổi: Dùng hàm parseFormattedValue cho các ô tiền tệ
+            const nhapHang = parseFormattedValue(inputs.nhapHang.value);
+            const thuePercent = parseFloat(inputs.thue.value) / 100 || 0;
+            const tongNgayBan = parseInt(inputs.tongNgayBan.value) || 0;
+            const ngayCaoDiem = parseInt(inputs.ngayCaoDiem.value) || 0;
+            const dtCaoDiem = parseFormattedValue(inputs.dtCaoDiem.value);
+            const dtThapDiem = parseFormattedValue(inputs.dtThapDiem.value);
+
+            // PHẦN 3: KẾT QUẢ KINH DOANH
+            const kqNgayThapDiem = tongNgayBan - ngayCaoDiem;
+            const kqTongDoanhThu = (ngayCaoDiem * dtCaoDiem) + (kqNgayThapDiem * dtThapDiem);
+            const kqLoiNhuanTruocThue = kqTongDoanhThu - nhapHang;
+            const kqThue = kqLoiNhuanTruocThue > 0 ? kqLoiNhuanTruocThue * thuePercent : 0;
+            const kqLoiNhuanRong = kqLoiNhuanTruocThue - kqThue;
+
+            // PHẦN 4: HOÀN VỐN
+            let kqHoanVon = "N/A";
+            if (kqLoiNhuanRong > 0) {
+                kqHoanVon = (tongVon / kqLoiNhuanRong).toFixed(1) + " (tháng)";
+            } else if (kqLoiNhuanRong === 0) {
+                kqHoanVon = "Không hoàn vốn";
+            } else {
+                kqHoanVon = "Lỗ";
+            }
+
+            // Cập nhật giao diện
+            outputs.kqNgayThapDiem.textContent = kqNgayThapDiem;
+            outputs.kqTongDoanhThu.textContent = formatter.format(kqTongDoanhThu);
+            outputs.kqLoiNhuanTruocThue.textContent = formatter.format(kqLoiNhuanTruocThue);
+            outputs.kqThue.textContent = formatter.format(kqThue);
+Examples:
+            outputs.kqLoiNhuanRong.textContent = formatter.format(kqLoiNhuanRong);
+            outputs.kqHoanVon.textContent = kqHoanVon;
+        }
+
+        // Thêm sự kiện 'input' cho tất cả các ô nhập liệu
+        Object.values(inputs).forEach(input => {
+            // sự kiện 'oninput' đã được gán trực tiếp trong HTML cho các ô tiền tệ
+            // nên chúng ta chỉ cần gán 'input' cho các ô còn lại
+            if (input.id !== 'nhapHang' && input.id !== 'dtCaoDiem' && input.id !== 'dtThapDiem') {
+                input.addEventListener('input', tinhToan);
+            }
+        });
+        
+        // Gán sự kiện 'input' cho các ô tiền tệ để cũng kích hoạt tính toán
+        document.getElementById('nhapHang').addEventListener('input', tinhToan);
+        document.getElementById('dtCaoDiem').addEventListener('input', tinhToan);
+        document.getElementById('dtThapDiem').addEventListener('input', tinhToan);
+
+        // Chạy tính toán lần đầu khi tải trang
+        tinhToan();
+    </script>
+
+</body>
+</html>
